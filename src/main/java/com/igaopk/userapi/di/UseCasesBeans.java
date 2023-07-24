@@ -20,5 +20,7 @@ public class UseCasesBeans {
     }
 
     @Bean
-    public UpdateUserUseCase injectUpdateUserUseCase() {return new UpdateUserUseCaseImpl();}
+    public UpdateUserUseCase injectUpdateUserUseCase() {
+        return new UpdateUserUseCaseImpl();
+    }
 }

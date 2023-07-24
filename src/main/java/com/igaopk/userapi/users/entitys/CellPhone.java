@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-@Entity
+@Entity(name = "cellphone")
 @Table(name = "TB_CELLPHONES")
 @Getter
 @Setter
@@ -18,16 +17,17 @@ public class CellPhone implements Serializable {
     @Id
     @Column(name = "phone_id", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "cell_phone")
     private String cellphone;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id" )
+    private User user;
 
     public CellPhone() {
+
     }
 
     public CellPhone(String cellphone) {
@@ -42,7 +42,7 @@ public class CellPhone implements Serializable {
         }
 
         if(obj instanceof CellPhone objCellphone){
-            return objCellphone.getId().equals(this.getId());
+            return objCellphone.getId() == this.getId();
         }
 
         return false;

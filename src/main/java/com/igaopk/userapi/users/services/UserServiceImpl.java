@@ -7,21 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
-;
+    ;
+
     @Override
     @Transactional
     public User save(User user) {
-        try{
+        try {
             repository.save(user);
             return user;
-        }catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             System.out.println(ex.getMessage());
             throw new UserNameDuplicateException();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
         }
@@ -29,12 +32,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserName(String username) {
-        try{
+        try {
             return (User) repository.findByUserName(username);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
             throw ex;
         }
     }
 
+    @Override
+    public List<User> findAll() {
+        return repository.retrieveAll();
+    }
 }

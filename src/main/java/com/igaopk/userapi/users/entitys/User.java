@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Table(name = "TB_USERS", schema = "public")
-@Entity
+@Entity(name = "user")
 @Data
 @Getter
 @Setter
@@ -39,9 +39,8 @@ public class User implements UserDetails {
     @Column(name = "user_password")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private List<CellPhone> cellPhones;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CellPhone> cellPhones = new ArrayList<>();
 
     public User() {
 
@@ -58,7 +57,6 @@ public class User implements UserDetails {
         this.fullName = createUserDTO.fullName();
         this.userName = createUserDTO.userName();
         this.password = createUserDTO.password();
-        this.cellPhones = CellPhoneMapper.parseCellPhoneToObject(createUserDTO.cellPhones());
     }
 
     public void encryptPassword(PasswordEncoder passwordEncoder) {
@@ -74,17 +72,6 @@ public class User implements UserDetails {
             this.password = userDTO.password();
         }
 
-        if (!userDTO.cellPhones().isEmpty()) {
-            for (String cellphone : userDTO.cellPhones()) {
-                List<String> newCellphones = new ArrayList<>();
-                var cache = this.cellPhones.stream().toList();
-                if (!cache.contains(cellphone)) {
-                    newCellphones.add(cellphone);
-                }
-
-                this.cellPhones.addAll(CellPhoneMapper.parseCellPhoneToObject(newCellphones));
-            }
-        }
     }
 
     @Override

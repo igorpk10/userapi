@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     UserDetails findByUserName(String userName);
 
-    @Query("SELECT DISTINCT FROM User e ")
+    @Query("SELECT u FROM user u JOIN FETCH u.cellPhones")
     List<User> retrieveAll();
-
 }
