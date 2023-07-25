@@ -34,19 +34,6 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    private UserService userService;
-
-    @GetMapping()
-    public ResponseEntity<List<UserDTO>> get() {
-        var users = userService.findAll();
-        var userDtoList = users.stream().map(user -> {
-            var cellphones = CellPhoneMapper.parseCellPhoneToList(user.getCellPhones());
-            return new UserDTO(user.getFullName(), user.getUsername(), user.getPassword(), user.getPassword(), cellphones);
-        }).toList();
-
-        return ResponseEntity.status(HttpStatus.OK).body(userDtoList);
-    }
 
     @PostMapping("/create")
     public ResponseEntity<UserCreatedDTO> create(@RequestBody @Valid CreateUserDTO userDTO) throws UserPasswordConfirmationException {

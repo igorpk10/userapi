@@ -29,17 +29,19 @@ public class LoginUseCaseImpl implements LoginUseCase {
     public JwtDataToken login(LoginDTO userDTO) throws UserPasswordException {
         try {
             var user = service.findByUserName(userDTO.userName());
-
-            if (passwordEncoder.matches(userDTO.password(), user.getPassword())) {
-                var authToken = new UsernamePasswordAuthenticationToken(userDTO.userName(), userDTO.password());
-                var authentication = manager.authenticate(authToken);
-                var jwtToken = tokenService.generateToken((User) authentication.getPrincipal());
-                return new JwtDataToken(jwtToken);
-            }
-
-            throw new UserPasswordException();
-        }catch (Exception ex){
+            return generateToken(userDTO, user);
+        } catch (Exception ex) {
             throw new UserPasswordException();
         }
+    }
+
+    private JwtDataToken generateToken(LoginDTO userDTO, User user) throws UserPasswordException {
+        if (passwordEncoder.matches(userDTO.password(), user.getPassword())) {
+            var authToken = new UsernamePasswordAuthenticationToken(userDTO.userName(), userDTO.password());
+            var authentication = manager.authenticate(authToken);
+            var jwtToken = tokenService.generateToken((User) authentication.getPrincipal());
+            return new JwtDataToken(jwtToken);
+        }
+        throw new UserPasswordException();
     }
 }

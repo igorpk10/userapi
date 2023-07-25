@@ -13,14 +13,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
-    ;
 
     @Override
     @Transactional
-    public User save(User user) {
+    public void save(User user) {
         try {
             repository.save(user);
-            return user;
         } catch (DataIntegrityViolationException ex) {
             System.out.println(ex.getMessage());
             throw new UserNameDuplicateException();

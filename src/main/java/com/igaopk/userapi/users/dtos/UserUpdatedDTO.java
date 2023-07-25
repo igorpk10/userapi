@@ -1,5 +1,7 @@
 package com.igaopk.userapi.users.dtos;
 
+import com.igaopk.userapi.users.entitys.User;
+import com.igaopk.userapi.users.mappers.CellPhoneMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -14,4 +16,8 @@ public record UserUpdatedDTO(
         @NotEmpty
         List<String> cellPhones
 ) {
+
+    public UserUpdatedDTO(User user) {
+        this(user.getFullName(), user.getUsername(), CellPhoneMapper.parseCellPhoneToList(user.getCellPhones()));
+    }
 }

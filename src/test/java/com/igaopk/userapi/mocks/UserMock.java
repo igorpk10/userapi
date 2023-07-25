@@ -10,6 +10,6 @@ public class UserMock {
     }
 
     public static User getUserMockWithoutCellphonesAndOtherUserName(){
-        return new User("Daniel Smith", "san", "daniel123", Collections.emptyList());
+        return new User("Daniel Smith", "daniel", "daniel123", Collections.emptyList());
     }
 }

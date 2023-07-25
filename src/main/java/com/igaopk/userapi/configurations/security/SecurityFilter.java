@@ -32,10 +32,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             if(user != null) {
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }else{
-                throw new UserNotFoundException();
-            }
-        }
+    }else{
+        throw new UserNotFoundException();
+    }
+}
         filterChain.doFilter(request, response);
     }
 

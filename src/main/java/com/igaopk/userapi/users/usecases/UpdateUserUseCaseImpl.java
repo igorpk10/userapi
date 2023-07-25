@@ -13,8 +13,8 @@ public class UpdateUserUseCaseImpl extends BaseUserCredentials implements Update
         var user = validateUserCredencials(userDTO.userName(), userDTO.password(), credentials);
         if (user != null) {
             user.update(userDTO);
-            var response = userRepository.save(user);
-            return new UserUpdatedDTO(response.getFullName(), response.getUsername(), CellPhoneMapper.parseCellPhoneToList(response.getCellPhones()));
+            userRepository.save(user);
+            return new UserUpdatedDTO(user);
         }
 
         throw new UserUpdateException();
